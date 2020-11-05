@@ -1,21 +1,105 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
+    <!-- my css -->
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-</head>
-<body>
-    <div id="start-game">
+    <title>CodeMasters</title>
+    </head>
+    <body>
+        <!-- menu button -->
+        <button id="menu-btn">
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-list" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+        </button>
+        <!-- end of menu button -->
 
-    </div>
-    <div id="main-game">
+        <!-- start screen -->
+        <div class="game-screen" id="start-screen">
+            <div id="game-art">
+                <h1 class="game-name">CodeMasters</h1>
+            </div>
 
-    </div>
-    <div id="battle-screen">
+            <input type="text" id="your-name">
+            <button id="enter-your-name">Begin Game</button>
+        </div>
+        <!-- end of start screen -->
+            
+        <!-- main game screen -->
+        <div class="game-screen" id="main-game">
+            <div id="main-game-info"></div>
+            <div id="playarea">
+                <div class="opponent" id="opp1"></div>
+                <div class="opponent" id="opp2"></div>
+                <div class="opponent" id="opp3"></div>
+                <div class="opponent" id="opp4"></div>
+                <div id="display-player"></div>
+            </div>
+        </div>
+        <!-- end of main game screen -->
 
+        <!-- battle screen -->
+        <div class="game-screen" id="battle-screen">
+
+            <div id="battle-enemy"></div>
+            <div class="health" id="enemy-health">
+                <h6>e-name</h6>
+                    <div class="progress">
+                        <div class="progress-bar" id="enemy-bar"role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+
+            </div>
+
+            <div id="battle-player"></div>
+            <div class="health" id="player-health">
+                <h6>y-name</h6>
+                <div class="progress">
+                    <div class="progress-bar" id="player-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="battle-menu">
+                <div id="attacks-menu">
+                    <button class="attack">Malware</button>
+                    <button class="attack">Bug</button>
+                    <button class="attack">404 error</button>
+                    <button class="attack">while loop x Infinity</button>
+                </div>
+                <div id="battle-options">
+                    <button class="choice" id="fix-kit">Fix Kit</button>
+                    <button class="choice" id="launch-attacks">Code</button>
+                    <button class="choice" id="rage-quit">Rage Quit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- end of battle screen -->
+
+        <!-- rules -->
+        <div class="game-screen" id="rules">
+
+        </div>
+        <!-- end of rules -->
     </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
     <script src="app.js"></script>
-</body>
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+    <!-- Option 2: jQuery, Popper.js, and Bootstrap JS
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    -->
+    </body>
 </html>
