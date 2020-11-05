@@ -13,8 +13,6 @@ body{
     align-items: center;
 }
 .game-screen{
-    border: 1px solid red;
-
     width: 50vw;
     height: 45vw;
 

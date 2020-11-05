@@ -15,24 +15,37 @@ const playerHealthBar = document.querySelector('#player-bar')
 //attack buttons
 const attacks = document.querySelectorAll('.attack')
 let bugAttack = Math.floor(Math.random() * 99)
+const playerNameBattle = document.querySelector('#player-name-battle')
+const attackMoves = [25,bugAttack,10,40]
+//battle options
+const rageQuit = document.querySelector('#rage-quit')
+const fixKit = document.querySelector('#fix-kit')
 
-const attackMoves = [
-    {malware:25},
-    {Bug: bugAttack},
-    {'404 error':10},
-    {'while loop': 70}
-]
+//
+const computedStyle = getComputedStyle(mainGame)
+const height = computedStyle.height
+const width = computedStyle.width
+mainGame.height = height.replace('px','')
+mainGame.width = width.replace('px','')
 
+//functions
 class Player{
-    constructor(){
+    constructor(x,y,color,width,height){
+        this.x = x
+        this.y = y
+        this.color = color
+        this.width =width
+        this.height = height
+        this.alive = true
         this.name = name
         this.health = 100
-        this.alive = true
+        this.myTurn = true
+    }
+    render(){
+        ctx.fillStyle = this.color
+        ctx.fillRect(this.x, this.y, this.width, this.height)
     }
 }
-
-
-
 const newElementC = (tagType, classes) => {
     const element = document.createElement(tagType)
     for (let i = 0; i < classes.length; i++){
@@ -83,40 +96,103 @@ const newElementI = (tagType, ID) => {
 //     })
 // }
 
-const beginGame =() =>{
-    const paul = new Player
+const beginGame =(Player) =>{
     startScreen.style.zIndex = 1
     rules.style.zIndex = 0
     mainGame.style.zIndex = 0
     battleScreen.style.zIndex = 0
     document.querySelector('#enter-your-name').addEventListener('click',()=>{
-        paul.name = (document.querySelector('#your-name').value)
+        Player.name = (document.querySelector('#your-name').value)
+        playerNameBattle.textContent = `${Player.name}` 
         startScreen.style.zIndex = 0
         rules.style.zIndex = 0
         mainGame.style.zIndex = 1
         battleScreen.style.zIndex = 0
-        console.log(paul);
-        return paul
+        // console.log(Player);
     })
 }
 
+const onCanvas = () =>{
+    
+}
+//check the health of players
+const checkHealth = (enemyHealth,Player) =>{
+    console.log(enemyHealth);
+    console.log(Player.health);
+    if (enemyHealth <= 0 || Player.health <= 0){
+        if (Player.Health <=0){
+            console.log('enemy wins');
+        } else if (enemyHealth <= 0){
 
+            console.log(`${Player.name} wins`);
+        }
+        setTimeout(()=>{
+            startScreen.style.zIndex = 0
+            rules.style.zIndex = 0
+            mainGame.style.zIndex = 1
+            battleScreen.style.zIndex = 0
+        },2000)
+    }
+}
 
-const zIndex = [startScreen,mainGame,battleScreen,rules]
-
-const battleLogic = (Player) =>{
-    enemyHealthBar.style.width = `${100}%`
-    playerHealthBar.style.width = `${Player.health}%`
+//restore health with fix kit button
+const restoreHealth = (Player) =>{
+    fixKit.addEventListener('click',()=>{
+        // Player.health += 25
+        Player.health = Player.health + 25
+        playerHealthBar.style.width = `${Player.health}%`
+    })
+}
+//rage quit
+const leaveBattle = () =>{
+    rageQuit.addEventListener('click',()=>{
+        startScreen.style.zIndex = 0
+        rules.style.zIndex = 0
+        mainGame.style.zIndex = 1
+        battleScreen.style.zIndex = 0
+    })
+}
+//enemy attacks
+const enemyAttack = (Player) =>{
+    let enemyChoice = Math.floor(Math.random() * 4)
+    Player.health = Player.health - attackMoves[enemyChoice]
+    setTimeout(()=>{
+        playerHealthBar.style.width = `${Player.health}%`
+    },2000)
+}
+const attackButtons = (enemyHealth,Player) =>{
     for (let i = 0; i < attacks.length; i++){
         attacks[i].addEventListener('click',()=>{
-            console.log(attackMoves[i]);
+            enemyHealth = enemyHealth - attackMoves[i]
+            if (Player.health <= 0){
+                Player.health = 0
+            }
+            if (enemyHealth <= 0){
+                enemyHealth = 0
+            }
+            enemyHealthBar.style.width = `${enemyHealth}%`
+            checkHealth(enemyHealth,Player)
+            enemyAttack(Player)
         })
     }
+}
+const battleLogic = (Player) =>{
+    let enemyHealth = 0
+    enemyHealth += 100
+    enemyHealthBar.style.width = `${enemyHealth}%`
+    playerHealthBar.style.width = `${Player.health}%`
+    leaveBattle()
+    attackButtons(enemyHealth, Player)
+    restoreHealth(Player)
+    setTimeout(()=>{
+        enemyHealth += 25
+        enemyHealthBar.style.width = `${enemyHealth}%`
+    },20000)
 }
 
     
 
-    // console.log(`rules z index${rules.style.zIndex}\nstart screen z index${startScreen.style.zIndex}\nmainGame z index${mainGame.style.zIndex}\nbattle screen z index ${battleScreen.style.zIndex}`);
+
 
 // console.log(`rules z index${rules.style.zIndex}\nstart screen z index${startScreen.style.zIndex}\nmainGame z index${mainGame.style.zIndex}\nbattle screen z index ${battleScreen.style.zIndex}`);
 
@@ -141,18 +217,23 @@ document.addEventListener('keydown',(evt)=>{
         console.log('battle');
     }
 })
-menuBtn.addEventListener('click',()=>{
-    rules.style.zIndex = 1
-    startScreen.style.zIndex = 0
-    mainGame.style.zIndex = 0
-    battleScreen.style.zIndex = 0
-    console.log(`rules z index${rules.style.zIndex}\nstart screen z index${startScreen.style.zIndex}\nmainGame z index${mainGame.style.zIndex}\nbattle screen z index ${battleScreen.style.zIndex}`);
-})
+const menuButton = () =>{
+    menuBtn.addEventListener('click',()=>{
+        rules.style.zIndex = 1
+        startScreen.style.zIndex = 0
+        mainGame.style.zIndex = 0
+        battleScreen.style.zIndex = 0
+        console.log(`rules z index${rules.style.zIndex}\nstart screen z index${startScreen.style.zIndex}\nmainGame z index${mainGame.style.zIndex}\nbattle screen z index ${battleScreen.style.zIndex}`);
+    })
+}
 const game = () =>{
-    const paul = beginGame()
-    battleLogic(paul)
+    const mainCharacter = new Player
+    beginGame(mainCharacter)
+    
+    battleLogic(mainCharacter)
     // mapMovement(playarea)
         
         
 }
 game()
+menuButton()
