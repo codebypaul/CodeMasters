@@ -3,6 +3,7 @@ const body = document.querySelector('body')
 const startScreen = document.querySelector('#start-screen')
 const battleScreen = document.querySelector('#battle-screen')
 const mainGame = document.querySelector('#main-game')
+const ctx = mainGame.getContext('2d')
 const rules = document.querySelector('#rules')
 //menu button
 const menuBtn = document.querySelector('#menu-btn')
@@ -50,37 +51,37 @@ const newElementI = (tagType, ID) => {
 //functions
 
 //moves the map to create illusion
-const mapMovement = (playarea) =>{
+// const mapMovement = (playarea) =>{
 
-    let negX = 0
-    let negY = 0
-    let posX = 0
-    let posY = 0
+//     let negX = 0
+//     let negY = 0
+//     let posX = 0
+//     let posY = 0
 
-    document.addEventListener('keydown',(evt)=>{
-        if (evt.key === 'w'){
-            //move up
-            posY += 2
-            negY -= 2
-            playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
-        }else if(evt.key === 'd'){
-            //move right
-            posX += 2
-            negX -= 2
-            playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
-        }else if(evt.key === 's'){
-            //move down
-            negY += 2
-            posY -=2
-            playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
-        }else if(evt.key === 'a'){
-            //move left
-            negX += 2
-            posX -= 2
-            playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
-        }
-    })
-}
+//     document.addEventListener('keydown',(evt)=>{
+//         if (evt.key === 'w'){
+//             //move up
+//             posY += 2
+//             negY -= 2
+//             playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
+//         }else if(evt.key === 'd'){
+//             //move right
+//             posX += 2
+//             negX -= 2
+//             playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
+//         }else if(evt.key === 's'){
+//             //move down
+//             negY += 2
+//             posY -=2
+//             playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
+//         }else if(evt.key === 'a'){
+//             //move left
+//             negX += 2
+//             posX -= 2
+//             playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
+//         }
+//     })
+// }
 
 const beginGame =() =>{
     const paul = new Player
@@ -95,7 +96,6 @@ const beginGame =() =>{
         mainGame.style.zIndex = 1
         battleScreen.style.zIndex = 0
         console.log(paul);
-        console.log(mainGame.style.zIndex);
         return paul
     })
 }
@@ -104,9 +104,9 @@ const beginGame =() =>{
 
 const zIndex = [startScreen,mainGame,battleScreen,rules]
 
-const battleLogic = (obj) =>{
+const battleLogic = (Player) =>{
     enemyHealthBar.style.width = `${100}%`
-    playerHealthBar.style.width = `${obj}%`
+    playerHealthBar.style.width = `${Player.health}%`
     for (let i = 0; i < attacks.length; i++){
         attacks[i].addEventListener('click',()=>{
             console.log(attackMoves[i]);
@@ -149,10 +149,10 @@ menuBtn.addEventListener('click',()=>{
     console.log(`rules z index${rules.style.zIndex}\nstart screen z index${startScreen.style.zIndex}\nmainGame z index${mainGame.style.zIndex}\nbattle screen z index ${battleScreen.style.zIndex}`);
 })
 const game = () =>{
-    beginGame()
-    
-    mapMovement(playarea)
+    const paul = beginGame()
+    battleLogic(paul)
+    // mapMovement(playarea)
         
-            
+        
 }
 game()
