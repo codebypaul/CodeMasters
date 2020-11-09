@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
 # dependencies
 /node_modules
 /.pnp
