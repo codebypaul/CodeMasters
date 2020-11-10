@@ -18,8 +18,8 @@ body{
     align-items: center;
 }
 .game-screen{
-    width: 50vw;
-    height: 45vw;
+    width: calc(var(--pixel-size) * 228);
+    height: calc(var(--pixel-size) * 206);
 
     margin: auto;
 
@@ -43,6 +43,39 @@ body{
 #menu-btn:hover{
     background: lightblue;
 }
+/*---------reset game div-----------*/
+.reset-game{
+    width: 50%;
+    height: 4rem;
+    
+    background:  rgba(100,100,100,.3);
+
+    position: fixed;
+    top: 0;
+    left: -50%;
+
+    transition: 1s linear all;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.reset-game.open{
+    left: 0; 
+}
+.reset-text{
+    font-size: 1.25rem;
+}
+.reset-option{
+    padding: .5rem;
+
+    width: 3rem;
+
+    border: .1rem solid grey;
+    border-radius: .5rem;
+}
+/*---------reset game div-----------*/
+
 /*-----------start screen----------*/
 #start-screen{
     display: flex;
@@ -61,35 +94,70 @@ body{
 
 /*-----------battle screen----------*/
 #battle-screen{
-    background: blue;
+    background-image: url("images/battle_background-CodeMasters.png");
+    background-size: cover;
 }
 
-#battle-enemy{
-    background: black;
-
-    width: 1rem;
-    height: 1rem;
-
+.battle-enemy{
+    width: calc( var(--grid-cell)* 4 );
+    height: calc( var(--grid-cell)* 4 );
     position: absolute;
-    top: 10%;
+    overflow:hidden;
+    top: -5%;
     left: 50%;
     transform: translateX(-50%);
 }
-#battle-player{
-    background: white;
-
-    width:1rem;
-    height: 1rem;
-
+.enemy_red{
     position: absolute;
-    bottom: 30%;
+    background: url('images/enemy_red.png');
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 16 );
+    height: calc( var(--grid-cell)* 16 );
+}
+.enemy_blue{
+    position: absolute;
+    background: url('images/enemy_blue.png');
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 16 );
+    height: calc( var(--grid-cell)* 16 );
+}
+.enemy_green{
+    position: absolute;
+    background: url('images/enemy_green.png');
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 16 );
+    height: calc( var(--grid-cell)* 16 );
+}
+.enemy_purple{
+    position: absolute;
+    background: url('images/enemy_purple.png');
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 16 );
+    height: calc( var(--grid-cell)* 16 );
+}
+
+.battle-player {
+    width: calc( var(--grid-cell)* 4 );
+    height: calc( var(--grid-cell)* 4 );
+    position: absolute;
+    overflow:hidden;
+    bottom: 35%;
     left: 50%;
     transform: translateX(-50%);
+}
+.player_sprite{
+    background: url('images/main_codemaster.png')no-repeat no-repeat;
+    position: absolute;
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 16 );
+    height: calc( var(--grid-cell)* 16 );
+
+    top: -200%;
 }
 
 .health{
-    width: 30%;
-    height: auto;
+    width: 40%;
+    height: 3rem;
 
     background: white;
 
@@ -97,15 +165,33 @@ body{
 }
 
 .progress{
-    width: 90%;
+    width: 95%;
 
     margin: auto;
 }
+.hp{
+    display: flex;
+    align-items: center;;
+}
 #player-health{
-    bottom: 30%;
+    bottom: 35%;
     right: 0;
 }
 #enemy-health{
+
+}
+#battle-info{
+    width: 95%;
+    height: 5%;
+
+    background:  rgba(100,100,100,.7);
+    color: white;
+
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+
 
 }
 #battle-menu{
@@ -172,8 +258,6 @@ body{
 
 /*-----------main game screen----------*/
 #main-game{
-    width: calc(var(--pixel-size) * 160);
-    height: calc(var(--pixel-size) * 144);
     overflow: hidden;
     background: #61ddf7;
     position:relative;
@@ -198,6 +282,8 @@ body{
     left: 50%;
     transform: translate(-50%,-50%);
 } */
+
+/*-----refactored code------*/
 .character {
     width: calc( var(--grid-cell)* 2 );
     height: calc( var(--grid-cell)* 2 );
@@ -205,13 +291,63 @@ body{
     overflow:hidden;
 
 }
+
 .character_spritesheet {
     position: absolute;
-    background: url("https://assets.codepen.io/21542/DemoRpgCharacter.png") no-repeat no-repeat;
+    background: url("images/main_codemaster.png") no-repeat no-repeat;
     background-size: 100%;
     width: calc( var(--grid-cell)* 8 );
     height: calc( var(--grid-cell)* 8 );
 }
+.enemy_red_spritesheet{
+    position: absolute;
+    background: url("images/enemy_red.png") no-repeat no-repeat;
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 8 );
+    height: calc( var(--grid-cell)* 8 );
+}
+#enemy-red{
+    position: absolute;
+    top: 30%;
+    left: 4.5%;
+}
+#enemy_blue_spritesheet{
+    position: absolute;
+    background: url("images/enemy_blue.png") no-repeat no-repeat;
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 8 );
+    height: calc( var(--grid-cell)* 8 );
+}
+#enemy-blue{
+    position: absolute;
+    top: 60%;
+    left: 19.5%;
+}
+#enemy_green_spritesheet{
+    position: absolute;
+    background: url("images/enemy_green.png") no-repeat no-repeat;
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 8 );
+    height: calc( var(--grid-cell)* 8 );
+}
+#enemy-green{
+    position: absolute;
+    top: 20%;
+    left: 73.5%;
+}
+#enemy_purple_spritesheet{
+    position: absolute;
+    background: url("images/enemy_purple.png") no-repeat no-repeat;
+    background-size: 100%;
+    width: calc( var(--grid-cell)* 8 );
+    height: calc( var(--grid-cell)* 8 );
+}
+#enemy-purple{
+    position: absolute;
+    top: 70%;
+    left: 65.75%;
+}
+
 .character[facing="right"] .character_spritesheet {
 background-position-y: calc( var(--pixel-size) * -32 );
 }
@@ -224,13 +360,15 @@ background-position-y: calc( var(--pixel-size) * -96 );
 .character[walking="true"] .character_spritesheet {
 animation: walkAnimation 0.6s steps(4) infinite; 
 }
-
-@keyframes walkAnimation {
-from {
-    transform: translate3d(0%,0%,0);
+#red{
+    
 }
-to {
-    transform: translate3d(-100%,0%,0);
+@keyframes walkAnimation {
+    from {
+        transform: translate3d(0%,0%,0);
+    }
+    to {
+        transform: translate3d(-100%,0%,0);
 }
 }
 .pixel-art{
@@ -246,6 +384,8 @@ to {
 
     /* background: blue; */
 }
+/*--------end of refactored code--------*/
+
 .opponent{
     width: 1rem;
     height: 1rem;

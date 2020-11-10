@@ -3,12 +3,13 @@ const body = document.querySelector('body')
 const startScreen = document.querySelector('#start-screen')
 const battleScreen = document.querySelector('#battle-screen')
 const mainGame = document.querySelector('#main-game')
-const rules = document.querySelector('#rules')
+// const rules = document.querySelector('#rules')
 //menu button
 const menuBtn = document.querySelector('#menu-btn')
 //playmap
 const playarea = document.querySelector('#playarea')
-const character = document.querySelector(".character");
+const character = document.querySelector("#main-character");
+const enemySprite = document.querySelector('#enemy_sprite')
 //healthbars
 const enemyHealthBar = document.querySelector('#enemy-bar')
 const playerHealthBar = document.querySelector('#player-bar')
@@ -16,12 +17,15 @@ const playerHealthBar = document.querySelector('#player-bar')
 const attacks = document.querySelectorAll('.attack')
 let bugAttack = Math.floor(Math.random() * 99)
 const playerNameBattle = document.querySelector('#player-name-battle')
+const enemyName = document.querySelector('#enemy-name-battle')
 const attackMoves = [25,bugAttack,10,40]
+const attackNames = ['malware','Bug','404 error','while loop']
 //battle options
 const rageQuit = document.querySelector('#rage-quit')
 const fixKit = document.querySelector('#fix-kit')
 
-
+const resetMenu = document.querySelector('.reset-game')
+const battleInfo = document.querySelector('#battle-info')
 //
 const computedStyle = getComputedStyle(mainGame)
 const height = computedStyle.height
@@ -29,23 +33,17 @@ const width = computedStyle.width
 mainGame.height = height.replace('px','')
 mainGame.width = width.replace('px','')
 
+const startNew = document.querySelector('#start-new-game')
+const returnToGame = document.querySelector('#return-to-game')
 //functions
 class Player{
-    constructor(x,y,color,width,height){
-        this.x = x
-        this.y = y
-        this.color = color
-        this.width =width
-        this.height = height
+    constructor(){
         this.alive = true
         this.name = name
         this.health = 100
         this.myTurn = true
     }
-    render(){
-        ctx.fillStyle = this.color
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-    }
+    
 }
 const newElementC = (tagType, classes) => {
     const element = document.createElement(tagType)
@@ -64,57 +62,72 @@ const newElementI = (tagType, ID) => {
 
 //functions
 
-//moves the map to create illusion
-// const mapMovement = (playarea) =>{
-
-//     let negX = 0
-//     let negY = 0
-//     let posX = 0
-//     let posY = 0
-
-//     document.addEventListener('keydown',(evt)=>{
-//         if (evt.key === 'w'){
-//             //move up
-//             posY += 2
-//             negY -= 2
-//             playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
-//         }else if(evt.key === 'd'){
-//             //move right
-//             posX += 2
-//             negX -= 2
-//             playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
-//         }else if(evt.key === 's'){
-//             //move down
-//             negY += 2
-//             posY -=2
-//             playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
-//         }else if(evt.key === 'a'){
-//             //move left
-//             negX += 2
-//             posX -= 2
-//             playarea.style.margin = `${posY}% ${posX}% ${negY}% ${negX}% `
-//         }
-//     })
-// }
-
 const beginGame =(Player) =>{
     startScreen.style.zIndex = 1
-    rules.style.zIndex = 0
     mainGame.style.zIndex = 0
     battleScreen.style.zIndex = 0
     document.querySelector('#enter-your-name').addEventListener('click',()=>{
         Player.name = (document.querySelector('#your-name').value)
         playerNameBattle.textContent = `${Player.name}` 
         startScreen.style.zIndex = 0
-        rules.style.zIndex = 0
         mainGame.style.zIndex = 1
         battleScreen.style.zIndex = 0
         // console.log(Player);
     })
 }
-
-const onCanvas = () =>{
+const collideRed = () =>{
+    if ((x > -4 && x < 24)&&(y > 30 && y < 66)){
+        enemyName.textContent = 'Red'
+        enemySprite.className = ''
+        enemySprite.classList.add('enemy_red')
+        battleBegin()
+        setTimeout(()=>{
+            x = 9
+            y = 66
+            character.setAttribute('facing','up')
+        },500)
+    }
     
+}
+const collideGreen = () =>{
+    if ((x > 140 && x < 168)&&(y < 50)){
+        enemyName.textContent = 'Green'
+        enemySprite.className = ''
+        enemySprite.classList.add('enemy_green')
+        battleBegin()
+        setTimeout(()=>{
+            x = 154
+            y = 50
+            character.setAttribute('facing','up')
+        },500)
+    }
+    
+}
+const collideBlue = () =>{
+    if ((x > 27 && x < 55)&&(y > 78 && y < 111)){
+        enemyName.textContent = 'Blue'
+        enemySprite.className = ''
+        enemySprite.classList.add('enemy_blue')
+        battleBegin()
+        setTimeout(()=>{
+            x = 41
+            y = 112
+            character.setAttribute('facing','up')
+        },500)
+    }
+}
+const collidePurple = () =>{
+    if ((x > 124 && x < 153)&&(y > 95)){
+        enemyName.textContent = 'Purple'
+        enemySprite.className = ''
+        enemySprite.classList.add('enemy_purple')
+        battleBegin()
+        setTimeout(()=>{
+            x = 138
+            y = 94
+            character.setAttribute('facing','down')
+        },500)
+    }
 }
 const resetHealth =(Player,enemyHealth)=>{
     setTimeout(()=>{
@@ -122,29 +135,36 @@ const resetHealth =(Player,enemyHealth)=>{
         Player.health = 100
         enemyHealthBar.style.width = `${enemyHealth}%`
         playerHealthBar.style.width = `${Player.health}%`
+        battleInfo.textContent = ''
         return enemyHealth, Player
     },5000)
 }
-
+const switchToMain = (enemyHealth) =>{
+    setTimeout(()=>{
+        startScreen.style.zIndex = 0
+        mainGame.style.zIndex = 1
+        battleScreen.style.zIndex = 0
+        enemyHealthBar.style.width = `${enemyHealth}%`
+        playerHealthBar.style.width = '100%'
+    },2500)
+}
 //check the health of players
 const checkHealth = (enemyHealth,Player) =>{
 
     if (enemyHealth <= 0 || Player.health <= 0){
-        if (Player.health <=0){
-            resetHealth(Player,enemyHealth)
-
-        } else if (enemyHealth <= 0){
-            resetHealth(Player,enemyHealth)
-
-        }
-        setTimeout(()=>{
-            startScreen.style.zIndex = 0
-            rules.style.zIndex = 0
-            mainGame.style.zIndex = 1
-            battleScreen.style.zIndex = 0
-            enemyHealthBar.style.width = `${enemyHealth}%`
-            playerHealthBar.style.width = '100%'
-        },2000)
+    if (Player.health <=0){
+        Player.health = 0
+        resetHealth(Player,enemyHealth)
+        battleInfo.textContent = 'Enemy Wins'
+        switchToMain(enemyHealth)
+        
+    } else if (enemyHealth <= 0){
+        enemyHealth = 0
+        resetHealth(Player,enemyHealth)
+        battleInfo.textContent = `${Player.name} wins`
+        switchToMain(enemyHealth)
+    }
+    
     }
 }
 
@@ -160,7 +180,7 @@ const restoreHealth = (Player) =>{
 const leaveBattle = (Player,enemyHealth) =>{
     rageQuit.addEventListener('click',()=>{
         startScreen.style.zIndex = 0
-        rules.style.zIndex = 0
+        // rules.style.zIndex = 0
         mainGame.style.zIndex = 1
         battleScreen.style.zIndex = 0
 
@@ -173,8 +193,13 @@ const enemyAttack = (Player) =>{
     Player.health = Player.health - attackMoves[enemyChoice]
     setTimeout(()=>{
         playerHealthBar.style.width = `${Player.health}%`
-    },2000)
+        battleInfo.textContent = `Enemy uses ${attackNames[enemyChoice]} it deals ${attackMoves[enemyChoice]} damage`
+    },3000)
 }
+
+// const resetHealth = () =>{
+    
+// }
 const attackButtons = (Player,enemyHealth) =>{
     for (let i = 0; i < attacks.length; i++){
         attacks[i].addEventListener('click',()=>{
@@ -193,8 +218,25 @@ const attackButtons = (Player,enemyHealth) =>{
                     enemyHealth = 100
                 },3000)
             }
+            // console.log(`enemy health is ${enemyHealth}`);
+            // console.log(`player health is ${Player.health}`);
+            battleInfo.textContent = `Player uses ${attackNames[i]} it deals ${attackMoves[i]} damage`
+            setTimeout(()=>{
+                battleInfo.textContent = ''
+            },2500)
             enemyHealthBar.style.width = `${enemyHealth}%`
             checkHealth(enemyHealth,Player)
+            attacks[0].disabled = true
+            attacks[1].disabled = true
+            attacks[2].disabled = true
+            attacks[3].disabled = true
+
+            setTimeout(()=>{
+                attacks[0].disabled = false
+                attacks[1].disabled = false
+                attacks[2].disabled = false
+                attacks[3].disabled = false
+            },3500)
             enemyAttack(Player)
             
         })
@@ -212,51 +254,62 @@ const battleLogic = (Player,enemyHealth) =>{
     
 }
 
-    
-
-
-
-// console.log(`rules z index${rules.style.zIndex}\nstart screen z index${startScreen.style.zIndex}\nmainGame z index${mainGame.style.zIndex}\nbattle screen z index ${battleScreen.style.zIndex}`);
+const battleBegin = () =>{
+    setTimeout(()=>{
+        startScreen.style.zIndex = 0
+        mainGame.style.zIndex = 0
+        battleScreen.style.zIndex = 1
+    },500)
+}
 
 document.addEventListener('keydown',(evt)=>{
     if (evt.key === '0'){
-        rules.style.zIndex = 1
+        // rules.style.zIndex = 1
         startScreen.style.zIndex = 0
         mainGame.style.zIndex = 0
-        battleScreen.style.zIndex = 0
-        console.log('rules');
+        battleScreen.style.zIndex = 1
+        console.log('battleScreen');
     }else if(evt.key === '9'){
-        rules.style.zIndex = 0
+        // rules.style.zIndex = 0
         startScreen.style.zIndex = 0
         mainGame.style.zIndex = 1
         battleScreen.style.zIndex = 0
         console.log('mainGame');
-    }else if(evt.key === '8'){
-        rules.style.zIndex = 0
-        startScreen.style.zIndex = 0
-        mainGame.style.zIndex = 0
-        battleScreen.style.zIndex = 1
-        console.log('battle');
     }
+    // else if(evt.key === '8'){
+    //     rules.style.zIndex = 0
+    //     startScreen.style.zIndex = 0
+    //     mainGame.style.zIndex = 0
+    //     battleScreen.style.zIndex = 1
+    //     console.log('battle');
+    // }
 })
 const menuButton = () =>{
+    let menuOpen = false
+    returnToGame.addEventListener('click',()=>{
+        menuOpen = false
+        resetMenu.classList.remove('open') 
+    })
     menuBtn.addEventListener('click',()=>{
-        rules.style.zIndex = 1
-        startScreen.style.zIndex = 0
-        mainGame.style.zIndex = 0
-        battleScreen.style.zIndex = 0
-        console.log(`rules z index${rules.style.zIndex}\nstart screen z index${startScreen.style.zIndex}\nmainGame z index${mainGame.style.zIndex}\nbattle screen z index ${battleScreen.style.zIndex}`);
+        if (menuOpen === false){
+            menuOpen = true
+            resetMenu.classList.add('open')
+            console.log(menuOpen);
+        }else{
+            menuOpen = false
+            resetMenu.classList.remove('open')
+        }
     })
 }
 
-var x = 90;
-var y = 34;
-var held_directions = []; //State of which arrow keys we are holding down
-var speed = 1; //How fast the character moves in pixels per frame
+let x = 90;
+let y = 34;
+let held_directions = []; //State of which arrow keys we are holding down
+let speed = 1; //How fast the character moves in pixels per frame
 
 const placeCharacter = () => {
     
-    var pixelSize = parseInt(
+    let pixelSize = parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
     );
     
@@ -271,21 +324,38 @@ const placeCharacter = () => {
     character.setAttribute("walking", held_direction ? "true" : "false");
     
     //Limits (gives the illusion of walls)
-    var leftLimit = -8;
-    var rightLimit = (16 * 11)+8;
-    var topLimit = -8 + 32;
-    var bottomLimit = (16 * 7);
+    let leftLimit = -8;
+    let rightLimit = (16 * 11)+8;
+    let topLimit = -8 + 32;
+    let bottomLimit = (16 * 7);
     if (x < leftLimit) { x = leftLimit; }
     if (x > rightLimit) { x = rightLimit; }
     if (y < topLimit) { y = topLimit; }
     if (y > bottomLimit) { y = bottomLimit; }
+    collideRed()
+    collideBlue()
+    collideGreen()
+    collidePurple()
     
-    
-    var camera_left = pixelSize * 66;
-    var camera_top = pixelSize * 42;
+    let camera_left = pixelSize * 100;
+    let camera_top = pixelSize * 60;
     
     playarea.style.transform = `translate3d( ${-x*pixelSize+camera_left}px, ${-y*pixelSize+camera_top}px, 0 )`;
-    character.style.transform = `translate3d( ${x*pixelSize}px, ${y*pixelSize}px, 0 )`;  
+    character.style.transform = `translate3d( ${x*pixelSize}px, ${y*pixelSize}px, 0 )`; 
+}
+const placeEnemies = () => {
+    
+    let pixelSize = parseInt(
+        getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
+    );
+    
+    
+    
+    let camera_left = pixelSize * 100;
+    let camera_top = pixelSize * 60;
+    
+    playarea.style.transform = `translate3d( ${-x*pixelSize+camera_left}px, ${-y*pixelSize+camera_top}px, 0 )`;
+    enemyRed.style.transform = `translate3d( ${x*pixelSize}px, ${y*pixelSize}px, 0 )`;  
 }
 const step = () => {
     placeCharacter();
@@ -294,7 +364,7 @@ const step = () => {
     })
 }
 step(); 
-
+// placeEnemies()
 
     /* Direction key state */
     const directions = {

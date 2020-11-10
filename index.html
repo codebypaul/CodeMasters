@@ -21,6 +21,16 @@
         </button>
         <!-- end of menu button -->
 
+        <!-- reset div -->
+        <div class="reset-game">
+            <p class="reset-text">Would you like to start a new game?</p>
+            <div class="mx-3 py-2">
+                <a href="https://codebypaul.github.io/CodeMasters/" class="btn bg-light reset-option" id="start-new-game">Yes</a>
+                <a class="btn bg-light reset-option" id="return-to-game">No</a>
+            </div>
+        </div>
+        <!-- end of reset div -->
+
         <!-- start screen -->
         <div class="game-screen" id="start-screen">
             <div id="game-art">
@@ -41,9 +51,22 @@
                 <div class="opponent" id="opp3"></div>
                 <div class="opponent" id="opp4"></div> -->
                 <!-- <div id="display-player"></div> -->
-                <div class="character" facing="down" walking="true">
+                <div class="character" id="main-character" facing="down" walking="true">
                     <div class="character_spritesheet pixel-art"></div>
                 </div>
+                <div class="character" id="enemy-red" facing="down">
+                    <div class="enemy_red_spritesheet pixel-art"></div>
+                </div>
+                <div class="character" id="enemy-blue" facing="down">
+                    <div id="enemy_blue_spritesheet" class="pixel-art"></div>
+                </div>
+                <div class="character" id="enemy-green" facing="down">
+                    <div id="enemy_green_spritesheet" class="pixel-art"></div>
+                </div>
+                <div class="character" id="enemy-purple" facing="down">
+                    <div id="enemy_purple_spritesheet" class="pixel-art"></div>
+                </div>
+                
             </div>
         </div>
         <!-- end of main game screen -->
@@ -51,23 +74,36 @@
         <!-- battle screen -->
         <div class="game-screen" id="battle-screen">
 
-            <div id="battle-enemy"></div>
+            <div class="battle-enemy">
+                <div id="enemy_sprite"></div>
+            </div>
             <div class="health" id="enemy-health">
-                <h6>e-name</h6>
+                <h6 id="enemy-name-battle"></h6>
                     <div class="progress">
+                        <span class="hp" id="enemy-hp">
+                            HP
+                        </span>
                         <div class="progress-bar" id="enemy-bar"role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
 
             </div>
 
-            <div id="battle-player"></div>
+            <div class="battle-player">
+                <div class="player_sprite"></div>
+            </div>
             <div class="health" id="player-health">
-                <h6 id="player-name-battle">y-name</h6>
+                <h6 id="player-name-battle"></h6>
                 <div class="progress">
+                    <span class="hp" id="player-hp">
+                        HP
+                    </span>
                     <div class="progress-bar" id="player-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
 
+            <div class="mx-auto text-center"id="battle-info">
+
+            </div>
             <div id="battle-menu">
                 <div id="attacks-menu">
                     <button class="attack">Malware</button>
@@ -85,9 +121,9 @@
         <!-- end of battle screen -->
 
         <!-- rules -->
-        <div class="game-screen" id="rules">
+        <!-- <div class="game-screen" id="rules">
 
-        </div>
+        </div> -->
         <!-- end of rules -->
     </div>
 
