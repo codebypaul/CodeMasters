@@ -3,7 +3,7 @@ const body = document.querySelector('body')
 const startScreen = document.querySelector('#start-screen')
 const battleScreen = document.querySelector('#battle-screen')
 const mainGame = document.querySelector('#main-game')
-// const rules = document.querySelector('#rules')
+const rules = document.querySelector('#rules')
 //menu button
 const menuBtn = document.querySelector('#menu-btn')
 //playmap
@@ -276,13 +276,7 @@ document.addEventListener('keydown',(evt)=>{
         battleScreen.style.zIndex = 0
         console.log('mainGame');
     }
-    // else if(evt.key === '8'){
-    //     rules.style.zIndex = 0
-    //     startScreen.style.zIndex = 0
-    //     mainGame.style.zIndex = 0
-    //     battleScreen.style.zIndex = 1
-    //     console.log('battle');
-    // }
+    
 })
 const menuButton = () =>{
     let menuOpen = false
@@ -294,10 +288,12 @@ const menuButton = () =>{
         if (menuOpen === false){
             menuOpen = true
             resetMenu.classList.add('open')
+            rules.classList.add('open')
             console.log(menuOpen);
         }else{
             menuOpen = false
             resetMenu.classList.remove('open')
+            rules.classList.remove('open')
         }
     })
 }
